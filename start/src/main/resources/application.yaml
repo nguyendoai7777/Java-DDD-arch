@@ -1,0 +1,25 @@
+server:
+  port: 1122
+  tomcat:
+    threads:
+      max: 50
+
+resilience4j:
+  ratelimiter:
+    instances:
+      helloApi:
+        limitForPeriod: 2
+        limitRefreshPeriod: 10s
+        timeoutDuration: 0
+  circuitbreaker:
+    instances:
+      helloApi:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+#        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 3
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+#        recordFailurePredicate: io.github.robwin.exception.RecordFailurePredicate
